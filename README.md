@@ -19,7 +19,7 @@ This started as a school project. The assignment was to make a video game throug
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0 - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
 
@@ -55,7 +55,7 @@ Ce projet commença comme un devoir scolaire dont le but était de créer un jeu
 
 ## License
 
-Ce projet est sous la licence GNU General Public License v3.0 - voir le fichier [LICENSE.md](LICENSE.md) pour plus de détails.
+Ce projet est sous la licence GNU General Public License v3.0 - voir le fichier [LICENSEd](LICENSE) pour plus de détails.
 
 ## Sources et remerciements
 
