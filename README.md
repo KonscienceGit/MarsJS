@@ -26,15 +26,15 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 ## Acknowledgments
 
 ### JavaScript libraries
-* [three.min.js, the JS library implementing WebGL](threejs.org/build/three.min.js)
-* [OrbitControls.min.js, allowing mouse control of the camera](github.com/mrdoob/three.js/blob/dev/examples/js/controls/OrbitControls.js)
-* [dat.gui.min.js, for fast and easy creation of a screen interface](github.com/dataarts/dat.gui)
+* [three.min.js, the JS library implementing WebGL](https://threejs.org/build/three.min.js)
+* [OrbitControls.min.js, allowing mouse control of the camera](https://github.com/mrdoob/three.js/blob/dev/examples/js/controls/OrbitControls.js)
+* [dat.gui.min.js, for fast and easy creation of a screen interface](https://github.com/dataarts/dat.gui)
 ### Tools, Textures and Cartographies
-* [Color textures of Mars and the Milky Way](solarsystemscope.com/textures/)
-* [Mars laser height map, created by MOLA (Mars Orbiter Laser Altimeter)](astrogeology.usgs.gov/search/map/Mars/Topography/HRSC_MOLA_Blend/Mars_HRSC_MOLA_BlendDEM_Global_200mp_v2)
-* [OpenEV, geospatial data visualizer](openev.sourceforge.net/)
-* [CrazyBump, tool for making normal and displacement maps](crazybump.com/)
-* [NormalMap Online, online tool for making normal and displacement maps](cpetry.github.io/NormalMap-Online/)
+* [Color textures of Mars and the Milky Way](https://www.solarsystemscope.com/textures/)
+* [Mars laser height map, created by MOLA (Mars Orbiter Laser Altimeter)](https://astrogeology.usgs.gov/search/map/Mars/Topography/HRSC_MOLA_Blend/Mars_HRSC_MOLA_BlendDEM_Global_200mp_v2)
+* [OpenEV, geospatial data visualizer](http://openev.sourceforge.net/)
+* [CrazyBump, tool for making normal and displacement maps](http://crazybump.com/)
+* [NormalMap Online, online tool for making normal and displacement maps](http://cpetry.github.io/NormalMap-Online/)
 
 
 # MarsJS (Français)
@@ -62,12 +62,12 @@ Ce projet est sous la licence GNU General Public License v3.0 - voir le fichier 
 ## Sources et remerciements
 
 ### Bibliothèques JavaScript
-* [three.min.js, la bibliotheque implémentant WebGL](threejs.org/build/three.min.js)
-* [OrbitControls.min.js, permettant le control de la caméra](github.com/mrdoob/three.js/blob/dev/examples/js/controls/OrbitControls.js)
-* [dat.gui.min.js, pour implémenter une interface simplement et rapidement](github.com/dataarts/dat.gui)
+* [three.min.js, la bibliotheque implémentant WebGL](https://threejs.org/build/three.min.js)
+* [OrbitControls.min.js, permettant le control de la caméra](https://github.com/mrdoob/three.js/blob/dev/examples/js/controls/OrbitControls.js)
+* [dat.gui.min.js, pour implémenter une interface simplement et rapidement](https://github.com/dataarts/dat.gui)
 ### Outils, Textures and Cartographies
-* [Map de couleurs de Mars et de la Voie Lactée](solarsystemscope.com/textures/)
-* [Map d'altitude de Mars, générée par le MOLA (Mars Orbiter Laser Altimeter) de la navette "Mars Global Surveyor" (MGS)](astrogeology.usgs.gov/search/map/Mars/Topography/HRSC_MOLA_Blend/Mars_HRSC_MOLA_BlendDEM_Global_200mp_v2)
-* [OpenEV, visualiseur de données géospatiales](openev.sourceforge.net/)
-* [CrazyBump, éditeur de map d'altitude et de normal maps](crazybump.com/)
-* [NormalMap Online, éditeur de map d'altitude et de normal maps](cpetry.github.io/NormalMap-Online/)
+* [Map de couleurs de Mars et de la Voie Lactée](https://www.solarsystemscope.com/textures/)
+* [Map d'altitude de Mars, générée par le MOLA (Mars Orbiter Laser Altimeter) de la navette "Mars Global Surveyor" (MGS)](https://astrogeology.usgs.gov/search/map/Mars/Topography/HRSC_MOLA_Blend/Mars_HRSC_MOLA_BlendDEM_Global_200mp_v2)
+* [OpenEV, visualiseur de données géospatiales](http://openev.sourceforge.net/)
+* [CrazyBump, éditeur de map d'altitude et de normal maps](http://crazybump.com/)
+* [NormalMap Online, éditeur de map d'altitude et de normal maps](http://cpetry.github.io/NormalMap-Online/)
