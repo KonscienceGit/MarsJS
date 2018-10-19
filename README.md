@@ -1,4 +1,4 @@
-![Animated gif of Mars](https://github.com/KonscienceGit/MarsJS/blob/master/Screenshoot/mars_gif.gif)
+![Animated gif of Mars](https://github.com/KonscienceGit/MarsJS/blob/master/Screenshoot/mars.jpg)
 # MarsJS (English)
 [Lire en Français](https://github.com/KonscienceGit/MarsJS/blob/master/README.md#marsjs-fran%C3%A7ais)
 
