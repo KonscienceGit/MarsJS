@@ -1,5 +1,6 @@
-[Lire en Français](https://github.com/KonscienceGit/MarsJS/blob/master/README.md#marsjs-fran%C3%A7ais)
+
 # MarsJS (English)
+[Lire en Français](https://github.com/KonscienceGit/MarsJS/blob/master/README.md#marsjs-fran%C3%A7ais)
 
 This is a Javascript 3D rendering of Mars using WebGL and custom maps (color, normal & displacement maps).
 
