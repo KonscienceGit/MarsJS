@@ -52,6 +52,9 @@ Ce rendu fait partie d'un projet (scolaire) plus vaste visant à développer un 
 ## Comment l'utiliser
 
 Il suffit d'accéder à ce lien: [https://konsciencegit.github.io/MarsJS/](https://konsciencegit.github.io/MarsJS/).
+
+Le chargement échoue? Essayez avec [cette version allégée!](https://konsciencegit.github.io/MarsJS/index_small.html)
+
 Ce visualiseur utilise JavaScript, donc il vous suffit juste d'un navigateur supportant WebGL!
 Bien qu'il soit recommandé d'utiliser un ordinateur personnel pour des question de bande passante, de performances et de facilité d'utilisation de la caméra, il est possible de visionner sur un appareil mobile tel qu'une tablette ou un smartphone.
 
