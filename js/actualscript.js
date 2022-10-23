@@ -105,20 +105,19 @@ const main = function () {
                 });
             } break;
             case 1:{
+                mars.visible = true;
+                initialized = true;
+                animate();
                 textureLoader.load("maps/mars/Blended_small_NRM.png", function (tex) {
                     matMars.normalMap = tex;
                     tex.anisotropy = anisotropicFilter;
                     tex.needsUpdate = true;
                 });
-            } break;
-            case 2:{
                 textureLoader.load("maps/mars/Blended_DISP_small.png", function (tex) {
                     matMars.displacementMap = tex;
                     tex.anisotropy = anisotropicFilter;
                     tex.needsUpdate = true;
                 });
-            } break;
-            case 3:{
                 textureLoader.load("maps/milkyway_small.jpg", function (tex) {
                     tex.anisotroopy = anisotropicFilter;
                     tex.needsUpdate = true;
@@ -133,30 +132,21 @@ const main = function () {
                 });
             } break;
             case 4:{
-                mars.visible = true;
-                initialized = true;
-                animate();
                 textureLoader.load("maps/mars/Blended_NRM.png", function (tex) {
                     matMars.normalMap = tex;
                     tex.anisotropy = anisotropicFilter;
                     tex.needsUpdate = true;
                 });
-            } break;
-            case 5:{
                 textureLoader.load("maps/mars/mars.jpg", function (tex) {
                     matMars.map = tex;
                     tex.anisotropy = anisotropicFilter;
                     tex.needsUpdate = true;
                 });
-            } break;
-            case 6:{
                 textureLoader.load("maps/mars/Blended_DISP.jpg", function (tex) {
                     matMars.displacementMap = tex;
                     tex.anisotropy = anisotropicFilter;
                     tex.needsUpdate = true;
                 });
-            } break;
-            case 7:{
                 textureLoader.load("maps/milkyway.jpg", function (tex) {
                     matSkybox.map = tex;
                     tex.anisotropy = anisotropicFilter;
@@ -211,7 +201,7 @@ const main = function () {
             mars.rotation.y = marsRotation;
         }
 
-        skybox.position.copy(camera.position);
+        if (skybox != null) skybox.position.copy(camera.position);
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
     }
