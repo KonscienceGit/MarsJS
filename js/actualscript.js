@@ -1,14 +1,12 @@
 "use strict";
-
 const main = function () {
 //engine variables
     let marsRotate = true;
-    let marsRotation = 0;
+    let marsRotation = 2.5;
     let maxAnisotropy;
     let anisotropicFilter;
     let textureLoader;
-    let manager;
-    let textManager;
+    let loadingManager;
     let initialized = false;
 
 //trinity of holy objects
@@ -23,8 +21,8 @@ const main = function () {
     let oldVM = 0;
     let textGeometry;
     let loadingGroup;
-    let geomSegBar = new THREE.BoxGeometry(0.98, 0.2, 0.1);
-    let geomBar = new THREE.BoxGeometry(5, 0.05, 0.1);
+    let geomSegBar = new THREE.BoxGeometry(0.4, 0.2, 0.02);
+    let geomBar = new THREE.BoxGeometry(4.35, 0.05, 0.1);
 
 //mesh objects
     let mars;
@@ -32,12 +30,11 @@ const main = function () {
 
 //materials
     let matMars;
+    let matSkybox;
     let matWhite = new THREE.MeshBasicMaterial({color: 0xffffff});
     let matMetal = new THREE.MeshStandardMaterial({color: 0xaaaaaa});
 
-    init();
-    loadingScene();
-    initGUI();
+
     //animate is called through the loading manager
 
     function init() {
@@ -54,27 +51,55 @@ const main = function () {
         document.body.appendChild(renderer.domElement);
         controls = new THREE.OrbitControls(camera);
 
-        //manager
-        manager = new THREE.LoadingManager();
-        textManager = new THREE.LoadingManager();
-
-        //images and textures
-        textureLoader = new THREE.TextureLoader(manager);
-
-        //loadingscreen items
+        loadingManager = new THREE.LoadingManager();
+        textureLoader = new THREE.TextureLoader(loadingManager);
         loadingGroup = new THREE.Group();
+        loadingGroup.position.y = -1.5;
         scene.add(loadingGroup);
+
+        //Event called on window resizing
+        window.addEventListener("resize", onWindowResize, false);
+
+        textureLoader.load("maps/mars/mars_small.jpg", function (tex) {
+            tex.anisotropy = anisotropicFilter;
+            tex.needsUpdate = true;
+            matMars = new THREE.MeshPhongMaterial({
+                map: tex,
+                color: 0xafaaaa,
+                specular: 0x050300,
+                shininess: 2,
+            });
+
+            //light
+            renderer.toneMappingExposure = 1.4; //affect exposure
+            const sunlight = new THREE.PointLight(0xffffff, 5, 200, 2);
+            sunlight.position.x=75;
+            sunlight.position.z=50;
+            scene.add(sunlight);
+            initGUI();
+        });
+
+        loadingManager.onProgress = function (url, itemsLoaded) {
+            loadingScreen(itemsLoaded);
+            renderer.render(scene, camera);
+        };
 
         loadingScreen(0);
     }
+    function addLoadingBlock (group, stage) {
+        const loadingBlock = new THREE.Mesh(geomSegBar, matMetal);
+        loadingBlock.position.x = -2 + (stage * 3/7);
+        group.add(loadingBlock);
+    }
 
     function loadingScreen(stage) {
+        addLoadingBlock(loadingGroup, stage);
         switch (stage) {
             case 0:{
                 const loadingBar = new THREE.Mesh(geomBar, matMetal);
                 loadingBar.position.y = -0.15;
                 loadingGroup.add(loadingBar);
-                const loader = new THREE.FontLoader(textManager);
+                const loader = new THREE.FontLoader();
                 loader.load("CyberspaceRacewayBack.json", function (font) {
                     textGeometry = new THREE.TextGeometry("LOADING...", {
                         font: font,
@@ -82,33 +107,72 @@ const main = function () {
                         height: 0.15,
                         curveSegments: 12
                     });
-                });
-                textManager.onLoad = function () {
                     const loadingText = new THREE.Mesh(textGeometry, matMetal);
                     loadingText.position.x = -2;
                     loadingText.position.y = 0.3;
-                    const loadingBlock1 = new THREE.Mesh(geomSegBar, matMetal);
-                    loadingBlock1.position.x = -2;
                     loadingGroup.add(loadingText);
-                    loadingGroup.add(loadingBlock1);
-                    renderer.render(scene, camera);
-                };
+                });
             } break;
             case 1:{
-                const loadingBlock2 = new THREE.Mesh(geomSegBar, matMetal);
-                loadingBlock2.position.x = -1;
-                loadingGroup.add(loadingBlock2);
+                textureLoader.load("maps/mars/Blended_small_NRM.png", function (tex) {
+                    matMars.normalMap = tex;
+                    tex.anisotropy = anisotropicFilter;
+                    tex.needsUpdate = true;
+                });
             } break;
             case 2:{
-                const loadingBlock3 = new THREE.Mesh(geomSegBar, matMetal);
-                loadingGroup.add(loadingBlock3);
+                textureLoader.load("maps/mars/Blended_DISP_small.png", function (tex) {
+                    matMars.displacementMap = tex;
+                    tex.anisotropy = anisotropicFilter;
+                    tex.needsUpdate = true;
+                });
             } break;
             case 3:{
-                const loadingBlock4 = new THREE.Mesh(geomSegBar, matMetal);
-                loadingBlock4.position.x = 1;
-                loadingGroup.add(loadingBlock4);
+                textureLoader.load("maps/milkyway_small.jpg", function (tex) {
+                    tex.anisotroopy = anisotropicFilter;
+                    tex.needsUpdate = true;
+                    matSkybox = new THREE.MeshBasicMaterial({
+                        map: tex,
+                        side: THREE.BackSide,
+                        depthWrite: false
+                    });
+                    skybox = new THREE.Mesh(new THREE.SphereGeometry(10,12,8), matSkybox);
+                    skybox.renderOrder = -999;
+                    scene.add(skybox);
+                });
             } break;
             case 4:{
+                mars.visible = true;
+                initialized = true;
+                animate();
+                textureLoader.load("maps/mars/Blended_NRM.png", function (tex) {
+                    matMars.normalMap = tex;
+                    tex.anisotropy = anisotropicFilter;
+                    tex.needsUpdate = true;
+                });
+            } break;
+            case 5:{
+                textureLoader.load("maps/mars/mars.jpg", function (tex) {
+                    matMars.map = tex;
+                    tex.anisotropy = anisotropicFilter;
+                    tex.needsUpdate = true;
+                });
+            } break;
+            case 6:{
+                textureLoader.load("maps/mars/Blended_DISP.jpg", function (tex) {
+                    matMars.displacementMap = tex;
+                    tex.anisotropy = anisotropicFilter;
+                    tex.needsUpdate = true;
+                });
+            } break;
+            case 7:{
+                textureLoader.load("maps/milkyway.jpg", function (tex) {
+                    matSkybox.map = tex;
+                    tex.anisotropy = anisotropicFilter;
+                    tex.needsUpdate = true;
+                });
+            } break;
+            case 8:{
                 scene.remove(loadingGroup);
                 loadingGroup = null;
                 textGeometry.dispose();
@@ -121,63 +185,8 @@ const main = function () {
                 matMetal = null;
                 matWhite.dispose();
                 matWhite = null;
-                mars.visible = true;
-                initialized = true;
-            } break;
-            default:
+            }
         }
-        renderer.render(scene, camera);
-    }
-
-    function loadingScene() {
-        // TODO load small first then large, for each textures.
-        const colorMapMars = textureLoader.load("maps/mars/mars.jpg");
-        // const colorMapMars = textureLoader.load("maps/mars/mars_small.jpg");
-        colorMapMars.anisotropy = anisotropicFilter;
-        const normalMapMars = textureLoader.load("maps/mars/Blended_NRM.png");
-        // const normalMapMars = textureLoader.load("maps/mars/Blended_small_NRM.png");
-        normalMapMars.anisotropy = anisotropicFilter;
-        const displacementMapMars = textureLoader.load("maps/mars/Blended_DISP.jpg");
-        // const displacementMapMars = textureLoader.load("maps/mars/Blended_DISP_small.png");
-        const colorMapSkybox = textureLoader.load("maps/milkyway.jpg");
-        // const colorMapSkybox = textureLoader.load("maps/milkyway_small.jpg");
-        colorMapSkybox.anisotropy = anisotropicFilter;
-
-        matMars = new THREE.MeshPhongMaterial({
-            color: 0xafaaaa,
-            specular: 0x050300,
-            shininess: 2,
-            map: colorMapMars,
-            normalMap: normalMapMars,
-            displacementMap: displacementMapMars
-        });
-
-    //Skybox
-        const geomSkybox = new THREE.SphereGeometry (10,24,16)
-        const matSkybox = new THREE.MeshBasicMaterial({
-            map: colorMapSkybox,
-            side: THREE.BackSide
-        });
-        skybox = new THREE.Mesh(geomSkybox, matSkybox);
-        skybox.material.depthWrite = false;
-        skybox.renderOrder = -999;
-        scene.add(skybox);
-
-    //light
-        renderer.toneMappingExposure = 1.4; //affect exposure
-        const sunlight = new THREE.PointLight(0xffffff, 5, 200, 2);
-        sunlight.position.x=75;
-        sunlight.position.z=50;
-        scene.add(sunlight);
-
-    //Event called on window resizing
-        window.addEventListener("resize", onWindowResize, false);
-
-        manager.onProgress = function (url, itemsLoaded) {
-            loadingScreen(itemsLoaded);
-        };
-
-        manager.onLoad = animate;
     }
 
     function animate() {
@@ -253,4 +262,6 @@ const main = function () {
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     }
+
+    init();
 };
