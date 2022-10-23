@@ -1,6 +1,7 @@
 "use strict";
 const main = function () {
-//engine variables
+    let gui;
+    //engine variables
     let marsRotate = true;
     let marsRotation = 2.5;
     let maxAnisotropy;
@@ -8,41 +9,31 @@ const main = function () {
     let textureLoader;
     let loadingManager;
     let initialized = false;
-
-//trinity of holy objects
+    //trinity of holy objects
     let scene;
     let camera;
     let renderer;
-
-//camera controls
+    //camera controls
     let controls;
-
-//geometry
+    //geometry
     let oldVM = 0;
     let textGeometry;
     let loadingGroup;
     let geomSegBar = new THREE.BoxGeometry(0.4, 0.2, 0.02);
     let geomBar = new THREE.BoxGeometry(4.35, 0.05, 0.1);
-
-//mesh objects
+    //mesh objects
     let mars;
     let skybox;
-
-//materials
+    //materials
     let matMars;
     let matSkybox;
     let matWhite = new THREE.MeshBasicMaterial({color: 0xffffff});
     let matMetal = new THREE.MeshStandardMaterial({color: 0xaaaaaa});
 
-
-    //animate is called through the loading manager
-
     function init() {
-        //depicting of the genesis
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.001, 200);
         camera.position.z = 3;
-
         renderer = new THREE.WebGLRenderer();
         maxAnisotropy = renderer.capabilities.getMaxAnisotropy(); //Anisotropic filtering, setting to the max possible
         anisotropicFilter = maxAnisotropy;
@@ -50,16 +41,18 @@ const main = function () {
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
         controls = new THREE.OrbitControls(camera);
-
         loadingManager = new THREE.LoadingManager();
         textureLoader = new THREE.TextureLoader(loadingManager);
         loadingGroup = new THREE.Group();
         loadingGroup.position.y = -1.5;
+        const scale = 0.42;
+        loadingGroup.scale.set(scale, scale, scale);
         scene.add(loadingGroup);
 
         //Event called on window resizing
         window.addEventListener("resize", onWindowResize, false);
 
+        // Init loading with this texture, once loaded we can display mars and the GUI.
         textureLoader.load("maps/mars/mars_small.jpg", function (tex) {
             tex.anisotropy = anisotropicFilter;
             tex.needsUpdate = true;
@@ -71,7 +64,7 @@ const main = function () {
             });
 
             //light
-            renderer.toneMappingExposure = 1.4; //affect exposure
+            renderer.toneMappingExposure = 1.4;
             const sunlight = new THREE.PointLight(0xffffff, 5, 200, 2);
             sunlight.position.x=75;
             sunlight.position.z=50;
@@ -79,16 +72,15 @@ const main = function () {
             initGUI();
         });
 
-        loadingManager.onProgress = function (url, itemsLoaded) {
-            loadingScreen(itemsLoaded);
+        loadingManager.onProgress = function (url, stage) {
+            loadingScreen(stage);
             renderer.render(scene, camera);
         };
-
         loadingScreen(0);
     }
     function addLoadingBlock (group, stage) {
         const loadingBlock = new THREE.Mesh(geomSegBar, matMetal);
-        loadingBlock.position.x = -2 + (stage * 3/7);
+        loadingBlock.position.x = stage * 3/7 -2;
         group.add(loadingBlock);
     }
 
@@ -108,8 +100,7 @@ const main = function () {
                         curveSegments: 12
                     });
                     const loadingText = new THREE.Mesh(textGeometry, matMetal);
-                    loadingText.position.x = -2;
-                    loadingText.position.y = 0.3;
+                    loadingText.position.set(-2,0.3,0);
                     loadingGroup.add(loadingText);
                 });
             } break;
@@ -137,7 +128,7 @@ const main = function () {
                         depthWrite: false
                     });
                     skybox = new THREE.Mesh(new THREE.SphereGeometry(10,12,8), matSkybox);
-                    skybox.renderOrder = -999;
+                    skybox.renderOrder = -1;
                     scene.add(skybox);
                 });
             } break;
@@ -185,8 +176,32 @@ const main = function () {
                 matMetal = null;
                 matWhite.dispose();
                 matWhite = null;
+                shouldOpenGUI();
             }
         }
+    }
+
+    function shouldOpenGUI () { // dont open if on mobile
+        let hasTouchScreen = false;
+        if ("maxTouchPoints" in navigator) {
+            hasTouchScreen = navigator.maxTouchPoints > 0;
+        } else if ("msMaxTouchPoints" in navigator) {
+            hasTouchScreen = navigator.msMaxTouchPoints > 0;
+        } else {
+            const mQ = window.matchMedia && matchMedia("(pointer:coarse)");
+            if (mQ && mQ.media === "(pointer:coarse)") {
+                hasTouchScreen = !!mQ.matches;
+            } else if ('orientation' in window) {
+                hasTouchScreen = true;
+            } else {
+                const UA = navigator.userAgent;
+                hasTouchScreen = (
+                    /\b(BlackBerry|webOS|iPhone|IEMobile)\b/i.test(UA) ||
+                    /\b(Android|Windows Phone|iPad|iPod)\b/i.test(UA)
+                );
+            }
+        }
+        if (!hasTouchScreen) gui.open();
     }
 
     function animate() {
@@ -201,9 +216,9 @@ const main = function () {
         requestAnimationFrame(animate);
     }
 
-//Dat GUI initialisation
     function initGUI() {
-        const gui = new dat.GUI({width: 350});
+        gui = new dat.GUI({width: 350});
+        gui.close();
         const effectController = {
             "NormalMapScale": 0.5,
             "DisplacementMapScale": 0.045,
@@ -234,7 +249,7 @@ const main = function () {
                     mars.material = null;
                     mars.geometry.dispose();
                 }
-                mars = new THREE.Mesh(new THREE.IcosahedronGeometry(1,  effectController.VertexMultiplier), matMars);
+                mars = new THREE.Mesh(new THREE.IcosahedronGeometry(1, effectController.VertexMultiplier), matMars);
                 mars.visible = initialized;
                 mars.rotation.y = marsRotation;
                 scene.add(mars);
@@ -243,7 +258,7 @@ const main = function () {
         gui.add(effectController, "VertexMultiplier", 0, 8, 1).onChange(createMars).name("Polygon Count Multiplier").listen();
         gui.add(effectController, "Reset").name("RESET");
         gui.add(effectController, "RotationMars").name("Rotation ON/OFF");
-        function changeAnisotropy() {
+        function changeAnisotropy(){
             skybox.material.map.anisotropy = effectController.AnisotropicFiltering;
             skybox.material.map.needsUpdate = true;
             mars.material.normalMap.anisotropy = effectController.AnisotropicFiltering;
