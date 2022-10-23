@@ -11,8 +11,6 @@ This rendering was part of a school project aiming at making a WebGL game, [Spac
 Just access this link: [https://konsciencegit.github.io/MarsJS/](https://konsciencegit.github.io/MarsJS/).
 This visualizer use JavaScript so you only need a WebGL capable browser!
 
-Not loading? try with [this lighter version!](https://konsciencegit.github.io/MarsJS/index_small.html)
-
 Though it is recommended to use a personal computer, as it will be faster to load and easier to move the camera around the planet, you can also access it on a mobile device.
 
 ## What is this
@@ -52,8 +50,6 @@ Ce rendu fait partie d'un projet (scolaire) plus vaste visant à développer un 
 ## Comment l'utiliser
 
 Il suffit d'accéder à ce lien: [https://konsciencegit.github.io/MarsJS/](https://konsciencegit.github.io/MarsJS/).
-
-Le chargement échoue? Essayez avec [cette version allégée!](https://konsciencegit.github.io/MarsJS/index_small.html)
 
 Ce visualiseur utilise JavaScript, donc il vous suffit juste d'un navigateur supportant WebGL!
 Bien qu'il soit recommandé d'utiliser un ordinateur personnel pour des question de bande passante, de performances et de facilité d'utilisation de la caméra, il est possible de visionner sur un appareil mobile tel qu'une tablette ou un smartphone.
