@@ -1,5 +1,3 @@
-//https://threejs.org/examples/#webgl_modifier_subdivision
-//https://threejs.org/docs/#api/geometries/SphereGeometry
 "use strict";
 
 var main = function () {
@@ -25,20 +23,16 @@ var main = function () {
     var sunlight;
 
 //geometry
-    var geomSphere;
-    var geomCube;
-    var geomBar;
     var oldVM = 0;
     var textGeometry;
     var loadingGroup;
     var geomSegBar = new THREE.BoxGeometry(0.98, 0.2, 0.1);
     var geomBar = new THREE.BoxGeometry(5, 0.05, 0.1);
-    var geomSkybox = new THREE.SphereGeometry (1,24,16);
+    var geomSkybox = new THREE.SphereGeometry (10,24,16);
 
 //mesh objects
     var mars;
     var skybox;
-    //var earth;
 
 //materials
     var matMars;
@@ -49,17 +43,17 @@ var main = function () {
 
     loadingScene();
     initGUI();
-    //animate is called throud the loading manager
+    //animate is called through the loading manager
 
 
     function init() {
-    //depicting of the genesis
+        //depicting of the genesis
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.001, 200);
         camera.position.z = 4.5;
 
         renderer = new THREE.WebGLRenderer();
-        maxAnisotropy = renderer.capabilities.getMaxAnisotropy(); //Anisotrop filtering, setting to the max possible
+        maxAnisotropy = renderer.capabilities.getMaxAnisotropy(); //Anisotropic filtering, setting to the max possible
         if (maxAnisotropy > 8) {
             sufficientAnisotropy = 8;
         }
@@ -67,24 +61,22 @@ var main = function () {
         document.body.appendChild(renderer.domElement);
         controls = new THREE.OrbitControls( camera );
 
-    //manager
+        //manager
         manager = new THREE.LoadingManager();
         textManager = new THREE.LoadingManager();
 
-    //images and textures
+        //images and textures
         textureLoader = new THREE.TextureLoader(manager);
 
-    //loadingscreen items
-    matWhite = new THREE.MeshBasicMaterial({color: 0xffffff});
-    matMetal = new THREE.MeshStandardMaterial({color: 0xaaaaaa});
-    geomCube = new THREE.BoxGeometry(0.98, 0.2, 0.1);
-    geomBar = new THREE.BoxGeometry(5, 0.05, 0.1);
+        //loadingscreen items
+        matWhite = new THREE.MeshBasicMaterial({color: 0xffffff});
+        matMetal = new THREE.MeshStandardMaterial({color: 0xaaaaaa});
 
-    //loadingscreen items
-    loadingGroup = new THREE.Group();
-    scene.add(loadingGroup);
+        //loadingscreen items
+        loadingGroup = new THREE.Group();
+        scene.add(loadingGroup);
 
-    loadingScreen( 0 );
+        loadingScreen( 0 );
     }
 
     function loadingScreen( stage ) {
@@ -154,6 +146,8 @@ var main = function () {
         var colorMapMars = textureLoader.load("maps/mars/mars.jpg");
         colorMapMars.anisotropy = sufficientAnisotropy;
         var normalMapMars = textureLoader.load("maps/mars/Blended_NRM.png");
+        // TODO load small first then large, for each textures.
+        // var normalMapMars = textureLoader.load("maps/mars/Blended_small_NRM.png");
         colorMapMars.anisotropy = sufficientAnisotropy;
         var displacementMapMars = textureLoader.load("maps/mars/Blended_DISP.jpg");
 
@@ -173,11 +167,6 @@ var main = function () {
             map: colorMapSkybox,
             side: THREE.BackSide
         });
-
-    //geometry
-        var geomSkybox = new THREE.SphereGeometry (10,24,16);
-        geomSphere = new THREE.SphereGeometry (1,300,200); // not local in order to be modified by dat gui
-        var geomIcoSphere = new THREE.IcosahedronGeometry(1, 4);
 
     //mesh positioning
         skybox = new THREE.Mesh(geomSkybox, matSkybox);

@@ -1,1 +1,0 @@
-https://stackoverflow.com/questions/48545475/apply-two-textures-on-a-plane-in-three-js
