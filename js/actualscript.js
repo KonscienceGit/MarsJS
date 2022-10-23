@@ -24,6 +24,7 @@ const main = function () {
     //mesh objects
     let mars;
     let skybox;
+    let marsColorMap;
     //materials
     let matMars;
     let matSkybox;
@@ -54,14 +55,9 @@ const main = function () {
 
         // Init loading with this texture, once loaded we can display mars and the GUI.
         textureLoader.load("maps/mars/mars_small.jpg", function (tex) {
+            marsColorMap = tex;
             tex.anisotropy = anisotropicFilter;
             tex.needsUpdate = true;
-            matMars = new THREE.MeshPhongMaterial({
-                map: tex,
-                color: 0xafaaaa,
-                specular: 0x050300,
-                shininess: 2,
-            });
 
             //light
             renderer.toneMappingExposure = 1.4;
@@ -69,7 +65,6 @@ const main = function () {
             sunlight.position.x=75;
             sunlight.position.z=50;
             scene.add(sunlight);
-            initGUI();
         });
 
         loadingManager.onProgress = function (url, stage) {
@@ -105,18 +100,21 @@ const main = function () {
                 });
             } break;
             case 1:{
-                mars.visible = true;
-                initialized = true;
-                animate();
-                textureLoader.load("maps/mars/Blended_small_NRM.png", function (tex) {
-                    matMars.normalMap = tex;
+                const normalMap = textureLoader.load("maps/mars/Blended_small_NRM.png", function (tex) {
                     tex.anisotropy = anisotropicFilter;
                     tex.needsUpdate = true;
                 });
-                textureLoader.load("maps/mars/Blended_DISP_small.png", function (tex) {
-                    matMars.displacementMap = tex;
+                const dispMap = textureLoader.load("maps/mars/Blended_DISP_small.png", function (tex) {
                     tex.anisotropy = anisotropicFilter;
                     tex.needsUpdate = true;
+                });
+                matMars = new THREE.MeshPhongMaterial({
+                    map: marsColorMap,
+                    normalMap: normalMap,
+                    displacementMap: dispMap,
+                    color: 0xafaaaa,
+                    specular: 0x050300,
+                    shininess: 2,
                 });
                 textureLoader.load("maps/milkyway_small.jpg", function (tex) {
                     tex.anisotroopy = anisotropicFilter;
@@ -131,7 +129,13 @@ const main = function () {
                     scene.add(skybox);
                 });
             } break;
+            case 3:{
+                initGUI();
+                mars.visible = true;
+                initialized = true;
+            } break;
             case 4:{
+                animate();
                 textureLoader.load("maps/mars/Blended_NRM.png", function (tex) {
                     matMars.normalMap = tex;
                     tex.anisotropy = anisotropicFilter;
